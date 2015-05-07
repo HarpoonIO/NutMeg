@@ -7,6 +7,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
     var canvasWidth = _canvasWidth;
     var grid;
     var walls;
+    init();
 
     function generate(dimensions, numDoors) {
         grid = new Array();
@@ -27,18 +28,18 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
         for (var i = 0; i < grid.length; i++) {
             if (i == 0 || i == (grid.length - 1)) {
                 for (var j = 0; j < grid.length; j++) {
-                    grid[i][j] = "w";
+                    grid[i][j] = "horizontal";
                 }
             } else {
-                grid[i][0] = "w";
-                grid[i][grid.length - 1] = "w";
+                grid[i][0] = "vertical";
+                grid[i][grid.length - 1] = "vertical";
             }
         }
     }
 
     function addEntrance() {
         var x = randomNumber(1, grid.length - 1);
-        grid[grid.length - 1][x] = "g";
+        grid[grid.length - 1][x] = "horizontal";
         return x;
     }
 
@@ -108,33 +109,24 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
 
     var createWalls = function () {
         // Find the coordinates for this wall in the array
-        for(var row = 0; row < walls.length; row++){
-            for(var col = 0; col < walls[0].lenght; col++){
-                walls[row][col] = "";
-
-
-
-
-
-                
-
-
+        for (var row = 0; row < walls.length; row++) {
+            for (var col = 0; col < walls[0].lenght; col++) {
+                var knowledgeExchange = convertCoordinate(canvasHeight, canvasWidth, row, col);
+                walls[row][col] = new Wall(knowledgeExchange.x, knowledgeExchange.y, grid[row][col], knowledgeExchange.length);
             }
-        }
-
-
-
-        convertCoordinate(canvasHeight, canvasWidth, 0, 0);
-
-
+        };
+        return walls;
     };
 
-    var init = function () {
+    function init () {
+        alert("dick");
         // Create wall 2d array to return
         walls = new Array(boardSize);
-        walls.forEach(function () {
-            new Array(boardSize);
-        });
+
+        for(var i = 0; i < walls.length; i++){
+            walls[i] = new Array(boardSize);
+        }
+
     };
 
     // converts 2d-array placement to canvas coordinate-values.
@@ -149,6 +141,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
     };
 
     return {
-        draw: draw
+        draw: draw,
+        createWalls: createWalls
     };
 };

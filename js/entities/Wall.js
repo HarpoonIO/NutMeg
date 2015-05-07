@@ -3,7 +3,7 @@
  **************************************************/
 // x = x coodinate of center, y = y coordinate of center
 // l = number of wall blocks (l * 100px), w = width of wall, dir = HORIZONTAL or VERTICAL
-var Wall = function (x, y, dir) {
+var Wall = function (x, y, dir, length) {
     var centerX = x;
     var centerY = y;
     var height, width;
@@ -12,9 +12,11 @@ var Wall = function (x, y, dir) {
     if (direction == "vertical") {
         height = 100;
         width = 10;
-    } else {
+    } else if(direction == "horizontal"){
         height = 10;
         width = 100;
+    }  else{
+        direction = undefined;
     }
 
 
@@ -160,15 +162,16 @@ var Wall = function (x, y, dir) {
     };
 
     var draw = function (ctx) {
-        ctx.fillStyle = "#4C4C4C";
-
-        ctx.beginPath();
-        ctx.moveTo(coords[0].x, coords[0].y);
-        ctx.lineTo(coords[1].x, coords[1].y);
-        ctx.lineTo(coords[2].x, coords[2].y);
-        ctx.lineTo(coords[3].x, coords[3].y);
-        ctx.closePath();
-        ctx.fill();
+        if(direction){
+            ctx.fillStyle = "#4C4C4C";
+            ctx.beginPath();
+            ctx.moveTo(coords[0].x, coords[0].y);
+            ctx.lineTo(coords[1].x, coords[1].y);
+            ctx.lineTo(coords[2].x, coords[2].y);
+            ctx.lineTo(coords[3].x, coords[3].y);
+            ctx.closePath();
+            ctx.fill();
+        }
     };
 
 

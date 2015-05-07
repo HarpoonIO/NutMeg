@@ -9,7 +9,7 @@
 /**************************************************
  ** PLAYGROUND CLASS
  **************************************************/
-var Playground = function (w, h, startX, startY) {
+var Playground = function (_canvasWidth, _canvasHeight, startX, startY) {
     /*
      0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19
      ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___
@@ -35,8 +35,10 @@ var Playground = function (w, h, startX, startY) {
      |___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|
 
      */
-
-    var walls = [];
+    var canvasWidth = _canvasWidth;
+    var canvasHeight = _canvasHeight;
+    var mazeGenerator = new MazeGenerator(canvasWidth, canvasHeight);
+    var walls = mazeGenerator.createWalls();
 
     // Initialise the local player
     var localPlayer = new Player(startX, startY);
