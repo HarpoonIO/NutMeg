@@ -37,34 +37,7 @@ var Playground = function (w, h, startX, startY) {
      */
 
     var walls = [];
-    var currentBuildPointX = 100;
-    var currentBuildPointY = 50;
 
-    var maxWidth = w;
-    var maxHeight = h;
-
-    var building = true;
-
-    // =================== Test Start ======================
-    var initializeFrame = new function () {
-        for (var i = 0; i < (maxWidth - 200) / 100; i++) {
-            var newWall1 = new Wall(currentBuildPointX, currentBuildPointY, "horizontal");
-            var newWall2 = new Wall(currentBuildPointX, currentBuildPointY + (maxHeight - 200), "horizontal");
-            currentBuildPointX += 100;
-            walls.push(newWall1);
-            walls.push(newWall2);
-        }
-
-        for (var i = 0; i < (maxHeight - 200) / 100; i++) {
-            var newWall1 = new Wall(currentBuildPointX - 50, currentBuildPointY, "vertical");
-            var newWall2 = new Wall(50, currentBuildPointY, "vertical");
-            currentBuildPointY += 100;
-            walls.push(newWall1);
-            walls.push(newWall2);
-        }
-    };
-
-    //================= Test End ===================
     // Initialise the local player
     var localPlayer = new Player(startX, startY);
 
@@ -81,9 +54,7 @@ var Playground = function (w, h, startX, startY) {
         walls.forEach(function (wall) {
             wall.performCollisionControl(localPlayer);
         });
-
     };
-
 
     return {
         update: update,

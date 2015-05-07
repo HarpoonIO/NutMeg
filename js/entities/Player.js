@@ -19,7 +19,7 @@ var Player = function(startX, startY) {
 	var pipeHeight = 25 * ratio;
 
 	var iterationsLeftToShoot = 0;
-	var projectilesCap = 100;
+	var projectilesCap = 7;
 
 
 	// COORDS ARE FULLY DEPENDENT ON THE centerX and centerY coordinates

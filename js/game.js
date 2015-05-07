@@ -16,8 +16,11 @@ function init() {
     ctx = canvas.getContext("2d");
 
     // Maximise the canvas
-    canvas.width = window.innerWidth * 0.9;
-    canvas.height = window.innerHeight;
+    //canvas.width = window.innerWidth * 0.9;
+    //canvas.height = window.innerHeight;
+
+    canvas.width = 590;
+    canvas.height = 590;
 
     // Initialise keyboard controls
     keys = new Keys();
@@ -31,7 +34,7 @@ function init() {
     var startX = Math.round(Math.random() * (canvas.width - 5)),
         startY = Math.round(Math.random() * (canvas.height - 5));
 
-    console.log(startX + ", " + startY);
+    console.log("Start coordinates: " + startX + ", " + startY);
 
     localPlayGround = new Playground(canvas.width, canvas.height, startX, startY);
 
