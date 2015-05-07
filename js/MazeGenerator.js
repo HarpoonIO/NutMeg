@@ -140,6 +140,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
     // converts 2d-array placement to canvas coordinate-values.
     var convertCoordinate = function (canvasHeight, canvasWidth, row, col) {
         var wallLength = canvasHeight / grid[0].length;
+
         return {
             x: wallLength * row,
             y: wallLength * col,
