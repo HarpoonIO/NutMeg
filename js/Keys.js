@@ -28,10 +28,10 @@ var Keys = function(up, left, right, down, space) {
 				break;
 			case 32: // SPACE - FIRE
 				that.space = true;
-				break;
+				break; 
 		};
 	};
-	
+
 	var onKeyUp = function(e) {
 		var that = this,
 			c = e.keyCode;
