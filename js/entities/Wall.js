@@ -9,12 +9,14 @@ var Wall = function (x, y, dir, length) {
     var height, width;
     // used when deciding dimensions
     var direction = dir;
-    if (direction == "vertical") {
-        height = 100;
-        width = 10;
-    } else if(direction == "horizontal"){
+    if (direction === "vertical") {
+        console.log("Vertical wall: " + centerX + "," + centerY);
         height = 10;
-        width = 100;
+        width = length;
+    } else if(direction === "horizontal"){
+        console.log("Horizontal wall: " + centerX + "," + centerY);
+        height = length;
+        width = 10;
     }  else{
         direction = undefined;
     }
@@ -173,7 +175,6 @@ var Wall = function (x, y, dir, length) {
             ctx.fill();
         }
     };
-
 
     return {
         draw: draw,

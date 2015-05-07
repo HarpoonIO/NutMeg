@@ -38,7 +38,7 @@ var Playground = function (_canvasWidth, _canvasHeight, startX, startY) {
     var canvasWidth = _canvasWidth;
     var canvasHeight = _canvasHeight;
     var mazeGenerator = new MazeGenerator(canvasWidth, canvasHeight);
-    var walls = mazeGenerator.createWalls();
+    mazeGenerator.createWalls();
 
     // Initialise the local player
     var localPlayer = new Player(startX, startY);
@@ -46,16 +46,19 @@ var Playground = function (_canvasWidth, _canvasHeight, startX, startY) {
     var draw = function (ctx) {
         // Draw the local player
         localPlayer.draw(ctx);
-        walls.forEach(function (wall) {
-            wall.draw(ctx);
-        });
+        mazeGenerator.draw(ctx);
+        /*
+        * walls.forEach(function (wall) {
+         wall.draw(ctx);
+         });
+        * */
     };
 
     var update = function (keys) {
         localPlayer.update(keys);
-        walls.forEach(function (wall) {
-            wall.performCollisionControl(localPlayer);
-        });
+        //walls.forEach(function (wall) {
+            //wall.performCollisionControl(localPlayer);
+        //});
     };
 
     return {

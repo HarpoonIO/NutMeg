@@ -100,44 +100,54 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
             console.log(output);
         }
     };
-    generate(11, 1, 1);
-    display();
 
+    // Loops through all walls and draw them
+    // NOTE: if undefined, does nothing -> no wall
     var draw = function (ctx) {
+
+        for(var i = 0; i < 11; i++){
+            for(var j = 0; j < 11; j++){
+                walls[i][j].draw(ctx);
+            }
+        }
+
+
 
     };
 
     var createWalls = function () {
         // Find the coordinates for this wall in the array
         for (var row = 0; row < walls.length; row++) {
-            for (var col = 0; col < walls[0].lenght; col++) {
-                var knowledgeExchange = convertCoordinate(canvasHeight, canvasWidth, row, col);
-                walls[row][col] = new Wall(knowledgeExchange.x, knowledgeExchange.y, grid[row][col], knowledgeExchange.length);
+            for (var i = 0; i < walls[0].length; i++) { // TODO: Why does this not work when i is col???
+                var knowledgeExchange = convertCoordinate(canvasHeight, canvasWidth, row, i);
+                walls[row][i] = new Wall(knowledgeExchange.x, knowledgeExchange.y, grid[row][i], knowledgeExchange.wallLength);
             }
-        };
+        }
         return walls;
     };
 
-    function init () {
-        alert("dick");
+    function init() {
         // Create wall 2d array to return
         walls = new Array(boardSize);
-
-        for(var i = 0; i < walls.length; i++){
+        for (var i = 0; i < walls.length; i++) {
             walls[i] = new Array(boardSize);
         }
+        generate(boardSize, 1, 1); // TODO: Figure out these arguments -.-
+
+
 
     };
 
-    // converts 2d-array placement to canvas coordinate-values.
+    // converts 2d-array placement to   canvas coordinate-values.
     var convertCoordinate = function (canvasHeight, canvasWidth, row, col) {
-        var wallLength = canvasHeight / grid[0].length;
+        var wallLength = canvasHeight / boardSize;
 
         return {
-            x: wallLength * row,
-            y: wallLength * col,
+            x: wallLength * (row ),
+            y: wallLength * (col ),
             wallLength: wallLength
         };
+
     };
 
     return {
