@@ -2,7 +2,7 @@
  * Created by thomashed & christophermortensen on 05/05/15.
  */
 var MazeGenerator = function (_canvasHeight, _canvasWidth) {
-    var boardSize = 21;
+    var boardSize = 11;
     var canvasHeight = _canvasHeight;
     var canvasWidth = _canvasWidth;
     var grid;
@@ -19,9 +19,8 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
             }
         }
 
-        addOuterWalls();
-        //var ent = addEntrance();
         addInnerWalls(true, 1, grid.length - 2, 1, grid.length - 2);
+        addOuterWalls();
     }
 
     function addOuterWalls() {
@@ -61,7 +60,6 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
             }
 
             var x = Math.floor(randomNumber(minX, maxX) / 2) * 2;
-            console.log("Random number: " + x);
             addVWall(minY, maxY, x);
 
             addInnerWalls(!h, minX, x - 1, minY, maxY);
