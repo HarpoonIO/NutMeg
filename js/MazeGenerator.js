@@ -40,6 +40,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
         }
 
         grid[0][0] = "both";
+        grid[grid.length-1][grid.length-1] = "";
     }
 
     function addEntrance() {
