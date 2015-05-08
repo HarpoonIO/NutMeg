@@ -19,8 +19,8 @@ function init() {
     //canvas.width = window.innerWidth * 0.9;
     //canvas.height = window.innerHeight;
 
-    canvas.width = 590;
-    canvas.height = 590;
+    canvas.width = 500;
+    canvas.height = 500;
 
     // Initialise keyboard controls
     keys = new Keys();
