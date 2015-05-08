@@ -7,8 +7,8 @@ var Player = function(startX, startY) {
 
 	var ratio = 0.2;
 
-	var speed = 8;
-	var rotation = 4; // 4
+	var speed = 3;
+	var rotation = 5; // 4
 	var currentDegrees = 0;
 	var centerX      = 200;
 	var centerY      = 250;

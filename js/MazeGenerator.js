@@ -2,7 +2,7 @@
  * Created by thomashed & christophermortensen on 05/05/15.
  */
 var MazeGenerator = function (_canvasHeight, _canvasWidth) {
-    var boardSize = 11;
+    var boardSize = 21;
     var canvasHeight = _canvasHeight;
     var canvasWidth = _canvasWidth;
     var grid;
@@ -20,30 +20,30 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
         }
 
         addOuterWalls();
-        var ent = addEntrance();
-        addInnerWalls(true, 1, grid.length - 2, 1, grid.length - 2, ent);
+        //var ent = addEntrance();
+        addInnerWalls(true, 1, grid.length - 2, 1, grid.length - 2);
     }
 
     function addOuterWalls() {
-        for (var i = 0; i < grid.length; i++) {
-            if (i == 0 || i == (grid.length - 1)) {
-                for (var j = 0; j < grid.length; j++) {
-                    grid[i][j] = "vertical";
+        for (var row = 0; row < grid.length; row++) {
+            if (row == 0 || row == (grid.length - 1)) {
+                for (var col = 0; col < grid.length; col++) {
+                    grid[row][col] = "vertical";
                 }
             } else {
-                grid[i][0] = "vertical";
-                grid[i][grid.length - 1] = "vertical";
+                grid[row][0] = "horizontal";
+                grid[row][grid.length - 1] = "horizontal";
             }
         }
     }
 
     function addEntrance() {
         var x = randomNumber(1, grid.length - 1);
-        grid[grid.length - 1][x] = "horizontal";
+        grid[grid.length - 1][x] = "vertical";
         return x;
     }
 
-    function addInnerWalls(h, minX, maxX, minY, maxY, gate) {
+    function addInnerWalls(h, minX, maxX, minY, maxY) {
         if (h) {
 
             if (maxX - minX < 2) {
@@ -53,18 +53,19 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
             var y = Math.floor(randomNumber(minY, maxY) / 2) * 2;
             addHWall(minX, maxX, y);
 
-            addInnerWalls(!h, minX, maxX, minY, y - 1, gate);
-            addInnerWalls(!h, minX, maxX, y + 1, maxY, gate);
+            addInnerWalls(!h, minX, maxX, minY, y - 1);
+            addInnerWalls(!h, minX, maxX, y + 1, maxY);
         } else {
             if (maxY - minY < 2) {
                 return;
             }
 
             var x = Math.floor(randomNumber(minX, maxX) / 2) * 2;
+            console.log("Random number: " + x);
             addVWall(minY, maxY, x);
 
-            addInnerWalls(!h, minX, x - 1, minY, maxY, gate);
-            addInnerWalls(!h, x + 1, maxX, minY, maxY, gate);
+            addInnerWalls(!h, minX, x - 1, minY, maxY);
+            addInnerWalls(!h, x + 1, maxX, minY, maxY);
         }
     }
 
@@ -73,7 +74,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
 
         for (var i = minX; i <= maxX; i++) {
             if (i == hole) grid[y][i] = "";
-            else grid[y][i] = "horizontal";
+            else grid[y][i] = "vertical";
         }
     }
 
@@ -82,7 +83,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
 
         for (var i = minY; i <= maxY; i++) {
             if (i == hole) grid[i][x] = "";
-            else grid[i][x] = "vertical";
+            else grid[i][x] = "horizontal";
         }
     }
 
@@ -116,9 +117,9 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
     var createWalls = function () {
         // Find the coordinates for this wall in the array
         for (var row = 0; row < walls.length; row++) {
-            for (var i = 0; i < walls[0].length; i++) { // TODO: Why does this not work when i is col???
-                var knowledgeExchange = convertCoordinate(canvasHeight, canvasWidth, row, i);
-                walls[row][i] = new Wall(knowledgeExchange.x, knowledgeExchange.y, grid[row][i], knowledgeExchange.wallLength);
+            for (var col = 0; col < walls[0].length; col++) { // TODO: Why does this not work when i is col???
+                var knowledgeExchange = convertCoordinate(canvasHeight, canvasWidth, row, col);
+                walls[row][col] = new Wall(knowledgeExchange.x, knowledgeExchange.y, grid[row][col], knowledgeExchange.wallLength);
             }
         }
         return walls;
