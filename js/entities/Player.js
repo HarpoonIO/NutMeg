@@ -5,7 +5,7 @@ var Player = function(startX, startY) {
 	var	direction = 'up';
 	var	projectiles = [];
 
-	var ratio = 0.8;
+	var ratio = 0.2;
 
 	var speed = 8;
 	var rotation = 4; // 4

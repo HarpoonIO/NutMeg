@@ -10,11 +10,9 @@ var Wall = function (x, y, dir, length) {
     // used when deciding dimensions
     var direction = dir;
     if (direction === "vertical") {
-        console.log("Vertical wall: " + centerX + "," + centerY);
         height = 10;
         width = length;
     } else if(direction === "horizontal"){
-        console.log("Horizontal wall: " + centerX + "," + centerY);
         height = length;
         width = 10;
     }  else{
@@ -55,13 +53,66 @@ var Wall = function (x, y, dir, length) {
      if(tangentPoint.x-moveAmount < centerX - (height/2))
      console.log("closest to left");
      */
-    var coords =
+
+    /*
+     var coords =
+     [
+     {"x": (centerX - (width / 2)), "y": (centerY + (height / 2))}, // 0
+     {"x": (centerX + (width / 2)), "y": (centerY + (height / 2))}, // 1
+     {"x": (centerX + (width / 2)), "y": (centerY - (height / 2))}, // 3
+     {"x": (centerX - (width / 2)), "y": (centerY - (height / 2))}  // 2
+     ];
+     */
+
+
+
+    // vertical wall
+    var vertical_coords =
         [
-            {"x": (centerX - (width / 2)), "y": (centerY + (height / 2))}, // 0
-            {"x": (centerX + (width / 2)), "y": (centerY + (height / 2))}, // 1
-            {"x": (centerX + (width / 2)), "y": (centerY - (height / 2))}, // 3
-            {"x": (centerX - (width / 2)), "y": (centerY - (height / 2))}  // 2
+            {"x": (centerX - (height/2)), "y": (centerY + width)}, // 0
+            {"x": (centerX + (height / 2)), "y": (centerY + width)}, // 1
+            {"x": (centerX + (height / 2)), "y": (centerY)}, // 3
+            {"x": (centerX - (height / 2)), "y": (centerY)}  // 2
         ];
+    //  0-----------------------------------> 	X                  height = short, width = long
+    //	0|			 2___________.__________3
+    //   |           |                      |
+    //   |           |                      |
+    //   |           |                      |
+    //   |           |                      |
+    //   |           |                      |
+    //   |           |                      |
+    //	 |		     |			            |
+    //	 |			 |			            |
+    //	 |			 |                      |
+    //	 |			 |			            |
+    //	 |			 | 			            |
+    //	 |			 |______________________|
+    //	 |		    0                        1
+    //   v
+    //
+    // 	 Y
+    // horizontal wall
+    var horizontal_coords =
+        [
+            {"x": (centerX), "y": (centerY + (width / 2))}, // 0
+            {"x": (centerX + height), "y": (centerY + (width / 2))}, // 1
+            {"x": (centerX + height), "y": (centerY - (width / 2))}, // 3
+            {"x": (centerX), "y": (centerY - (width / 2))}  // 2
+        ];
+    //  0-----------------------------------> 	X
+    //	0|			2 ______________________ 3
+    //	 |		     |			            |
+    //	 |			 |			            |
+    //	 |			 .                      |
+    //	 |			 |			            |
+    //	 |			 | 			            |
+    //	 |			 |______________________|
+    //	 |		    0                        1
+    //   v
+    //
+    // 	 Y
+
 
     // takes the player, that contains all the projectiles to test on
     // If you want to bounce off a horizontal wall (e.g. top or bottom of the screen),
@@ -167,10 +218,20 @@ var Wall = function (x, y, dir, length) {
         if(direction){
             ctx.fillStyle = "#4C4C4C";
             ctx.beginPath();
-            ctx.moveTo(coords[0].x, coords[0].y);
-            ctx.lineTo(coords[1].x, coords[1].y);
-            ctx.lineTo(coords[2].x, coords[2].y);
-            ctx.lineTo(coords[3].x, coords[3].y);
+
+            if(direction == "vertical"){
+                ctx.moveTo(vertical_coords[0].x, vertical_coords[0].y);
+                ctx.lineTo(vertical_coords[1].x, vertical_coords[1].y);
+                ctx.lineTo(vertical_coords[2].x, vertical_coords[2].y);
+                ctx.lineTo(vertical_coords[3].x, vertical_coords[3].y);
+            }
+            if(direction == "horizontal"){
+                ctx.moveTo(horizontal_coords[0].x, horizontal_coords[0].y);
+                ctx.lineTo(horizontal_coords[1].x, horizontal_coords[1].y);
+                ctx.lineTo(horizontal_coords[2].x, horizontal_coords[2].y);
+                ctx.lineTo(horizontal_coords[3].x, horizontal_coords[3].y);
+            }
+
             ctx.closePath();
             ctx.fill();
         }

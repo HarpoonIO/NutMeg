@@ -28,18 +28,18 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
         for (var i = 0; i < grid.length; i++) {
             if (i == 0 || i == (grid.length - 1)) {
                 for (var j = 0; j < grid.length; j++) {
-                    grid[i][j] = "horizontal";
+                    grid[i][j] = "vertical";
                 }
             } else {
-                grid[i][0] = "vertical";
-                grid[i][grid.length - 1] = "vertical";
+                grid[i][0] = "horizontal";
+                grid[i][grid.length - 1] = "horizontal";
             }
         }
     }
 
     function addEntrance() {
         var x = randomNumber(1, grid.length - 1);
-        grid[grid.length - 1][x] = "horizontal";
+        grid[grid.length - 1][x] = "vertical";
         return x;
     }
 
@@ -73,7 +73,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
 
         for (var i = minX; i <= maxX; i++) {
             if (i == hole) grid[y][i] = "";
-            else grid[y][i] = "w";
+            else grid[y][i] = "vertical";
         }
     }
 
@@ -82,7 +82,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
 
         for (var i = minY; i <= maxY; i++) {
             if (i == hole) grid[i][x] = "";
-            else grid[i][x] = "w";
+            else grid[i][x] = "horizontal";
         }
     }
 
@@ -132,7 +132,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
         for (var i = 0; i < walls.length; i++) {
             walls[i] = new Array(boardSize);
         }
-        generate(boardSize, 1, 1); // TODO: Figure out these arguments -.-
+        generate(11); // TODO: Figure out these arguments -.-
 
 
 
