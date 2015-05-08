@@ -106,8 +106,8 @@ var Player = function(startX, startY) {
 		if (keys.space && projectiles.length < projectilesCap && iterationsLeftToShoot == 0){
 			var newProjectile = new Projectile(centerX, centerY, currentDegrees);
 			iterationsLeftToShoot = 25;
-			newProjectile.setRadius(newProjectile.getRadius() * ratio);
-			newProjectile.forwardPush(85*ratio);
+			newProjectile.setRadius(newProjectile.getRadius() * 1); // ratio
+			newProjectile.forwardPush(85*ratio); //
 			projectiles.push(newProjectile);
 			console.log("Shot a projectile at: " + currentDegrees + "°");
 		}

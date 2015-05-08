@@ -29,11 +29,17 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
                 for (var col = 0; col < grid.length; col++) {
                     grid[row][col] = "vertical";
                 }
-            } else {
-                grid[row][0] = "horizontal";
-                grid[row][grid.length - 1] = "horizontal";
             }
+
+            if(row != grid.length-1){
+                grid[row][0] = "horizontal";
+                grid[row][grid.length-1] = "horizontal";
+            }
+
+
         }
+
+        grid[0][0] = "both";
     }
 
     function addEntrance() {

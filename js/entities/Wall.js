@@ -10,12 +10,16 @@ var Wall = function (x, y, dir, length) {
     // used when deciding dimensions
     var direction = dir;
     if (direction === "vertical") {
-        height = 10;
+        height = 15;
         width = length;
     } else if(direction === "horizontal"){
         height = length;
-        width = 10;
-    }  else{
+        width = 15;
+    }  else if(direction == "both"){
+        height = 15;
+        width = length;
+    }
+    else{
         direction = undefined;
     }
 
@@ -93,6 +97,11 @@ var Wall = function (x, y, dir, length) {
     //
     // 	 Y
     // horizontal wall
+
+    if(direction == "both"){
+        height = length;
+        width = 15;
+    }
     var horizontal_coords =
         [
             {"x": (centerX), "y": (centerY + (width / 2))}, // 0
@@ -219,13 +228,13 @@ var Wall = function (x, y, dir, length) {
             ctx.fillStyle = "#4C4C4C";
             ctx.beginPath();
 
-            if(direction == "vertical"){
+            if(direction == "vertical" || direction == "both"){
                 ctx.moveTo(vertical_coords[0].x, vertical_coords[0].y);
                 ctx.lineTo(vertical_coords[1].x, vertical_coords[1].y);
                 ctx.lineTo(vertical_coords[2].x, vertical_coords[2].y);
                 ctx.lineTo(vertical_coords[3].x, vertical_coords[3].y);
             }
-            if(direction == "horizontal"){
+            if(direction == "horizontal" || direction == "both"){
                 ctx.moveTo(horizontal_coords[0].x, horizontal_coords[0].y);
                 ctx.lineTo(horizontal_coords[1].x, horizontal_coords[1].y);
                 ctx.lineTo(horizontal_coords[2].x, horizontal_coords[2].y);
