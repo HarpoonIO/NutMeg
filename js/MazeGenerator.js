@@ -24,23 +24,30 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
     }
 
     function addOuterWalls() {
+
+
+        // Vertical Walls
         for (var row = 0; row < grid.length; row++) {
+            // Horizontal Walls
+            if(row != grid.length-1){
+                grid[row][0] = "horizontal";
+                grid[row][grid.length-1] = "horizontal";
+            }
+            // Extra Whitespace
+            if(row != grid.length-2){
+                grid[row][1] = "";
+                grid[row][grid.length-2] = "";
+            }
+
             if (row == 0 || row == (grid.length - 1)) {
                 for (var col = 0; col < grid.length; col++) {
                     grid[row][col] = "vertical";
                 }
             }
-
-            if(row != grid.length-1){
-                grid[row][0] = "horizontal";
-                grid[row][grid.length-1] = "horizontal";
-            }
-
-
         }
 
         grid[0][0] = "both";
-        grid[grid.length-1][grid.length-1] = "";
+        grid[grid.length-1][grid.length-1] = "both";
     }
 
     function addEntrance() {
@@ -124,7 +131,7 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
         for (var row = 0; row < walls.length; row++) {
             for (var col = 0; col < walls[0].length; col++) { // TODO: Why does this not work when i is col???
                 var knowledgeExchange = convertCoordinate(canvasHeight, canvasWidth, row, col);
-                walls[row][col] = new Wall(knowledgeExchange.x, knowledgeExchange.y, grid[row][col], knowledgeExchange.wallLength);
+                walls[row][col] = new Wall(knowledgeExchange.x, knowledgeExchange.y, grid[row][col], knowledgeExchange.wallLength, row, col);
             }
         }
         return walls;
@@ -146,15 +153,20 @@ var MazeGenerator = function (_canvasHeight, _canvasWidth) {
         var wallLength = canvasHeight / boardSize;
 
         return {
-            x: wallLength * (row ),
-            y: wallLength * (col ),
+            x: (wallLength * (row ))+wallLength/2,
+            y: (wallLength * (col ))+wallLength/2,
             wallLength: wallLength
         };
 
     };
 
+    var getBoardSize = function(){
+        return boardSize;
+    };
+
     return {
         draw: draw,
-        createWalls: createWalls
+        createWalls: createWalls,
+        getBoardSize: getBoardSize
     };
 };

@@ -1,13 +1,20 @@
 /**************************************************
  ** Projectile CLASS
  **************************************************/
-var Projectile = function(x, y, deg) {
+var Projectile = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
+    var boardSize = _boardSize;
+    var canvasWidth = _canvasWidth;
+    var canvasHeight = _canvasHeight;
     var centerX = x;
     var centerY = y;
     var degrees = deg;
-    var moveAmount = 10; // 10
+    var moveAmount = 5; // 10
     var lifeAmount = 400; // 400
-    var radius = 12;
+    var radius = 10;
+
+    var wallLength = canvasHeight / boardSize;
+    var oldGridCell = {};
+    var currentGridCell = {};
 
     var lineCoords =
     [
@@ -17,6 +24,7 @@ var Projectile = function(x, y, deg) {
 
     var draw = function(ctx) {
         forwardPush(moveAmount);
+        updateCellData();
 
         // Vector-Line
         ctx.lineWidth = 0.4;
@@ -46,6 +54,20 @@ var Projectile = function(x, y, deg) {
     // the point on the arc where the center of the circle will be on, after 'radius' pixels
     var getTangentPoint = function(){
         return {"x": (radius * Math.cos(degrees * Math.PI/180)) + centerX, "y": (radius * Math.sin(degrees * Math.PI/180)) + centerY};
+    };
+
+    var getTangentPoint_Special = function(_direction){
+        if(_direction == "right"){
+            return {"x": (radius * Math.cos(0 * Math.PI/180)) + centerX, "y": (radius * Math.sin(0 * Math.PI/180)) + centerY};
+        }
+        else if(_direction == "down"){
+            return {"x": (radius * Math.cos(90 * Math.PI/180)) + centerX, "y": (radius * Math.sin(90 * Math.PI/180)) + centerY};
+        }
+        else if(_direction == "left"){
+            return {"x": (radius * Math.cos(180 * Math.PI/180)) + centerX, "y": (radius * Math.sin(180 * Math.PI/180)) + centerY};
+        } else{
+            return {"x": (radius * Math.cos(270 * Math.PI/180)) + centerX, "y": (radius * Math.sin(270 * Math.PI/180)) + centerY};
+        }
     };
 
     var getAllTangentPoints = function(){
@@ -119,6 +141,35 @@ var Projectile = function(x, y, deg) {
         }
     };
 
+    var updateCellData = function(){
+        var temp = { x: currentGridCell.x, y: currentGridCell.y};
+        currentGridCell = { x:Math.floor(getTangentPoint().x / wallLength), y:Math.floor(getTangentPoint().y / wallLength) };
+
+        if(temp.x != currentGridCell.x || temp.y != currentGridCell.y){
+            console.log("moved from " + temp.x + "," + temp.y + " to " + currentGridCell.x + "," + currentGridCell.y);
+
+            oldGridCell = { x: temp.x, y: temp.y };
+        }
+    };
+
+    var getCurrentCell = function(){
+        //var wallLength = canvasHeight / boardSize;
+        //return { x:Math.floor(getTangentPoint().x / wallLength), y:Math.floor(getTangentPoint().y / wallLength) };
+        return currentGridCell;
+    };
+
+    var getOldCell = function () {
+        return oldGridCell;
+    };
+
+    var disappear = function(){
+        radius = 0;
+    };
+
+    var getCenterCell = function(){
+        return { x:Math.floor(centerX / wallLength), y:Math.floor(centerY / wallLength) };
+    };
+
     return {
         forwardPush: forwardPush,
         draw: draw,
@@ -134,6 +185,11 @@ var Projectile = function(x, y, deg) {
         getTangentPoint: getTangentPoint,
         getAllTangentPoints: getAllTangentPoints,
         getFourTangentPoints: getFourTangentPoints,
-        getDirectionWord: getDirectionWord
+        getDirectionWord: getDirectionWord,
+        getTangentPoint_Special: getTangentPoint_Special,
+        getCurrentCell: getCurrentCell,
+        disappear: disappear,
+        getOldCell: getOldCell,
+        getCenterCell: getCenterCell
     }
 };

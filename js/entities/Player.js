@@ -1,11 +1,14 @@
 /**************************************************
 ** GAME PLAYER CLASS
 **************************************************/
-var Player = function(startX, startY) {
+var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
+	var boardSize = _boardSize;
+	var canvasWidth = _canvasWidth;
+	var canvasHeight = _canvasHeight;
+
 	var	direction = 'up';
 	var	projectiles = [];
-
-	var ratio = 0.2;
+	var ratio = 0.3;
 
 	var speed = 3;
 	var rotation = 5; // 4
@@ -104,12 +107,12 @@ var Player = function(startX, startY) {
 		}
 
 		if (keys.space && projectiles.length < projectilesCap && iterationsLeftToShoot == 0){
-			var newProjectile = new Projectile(centerX, centerY, currentDegrees);
+			var newProjectile = new Projectile(centerX, centerY, currentDegrees, boardSize, canvasWidth, canvasHeight);
 			iterationsLeftToShoot = 25;
 			newProjectile.setRadius(newProjectile.getRadius() * 1); // ratio
 			newProjectile.forwardPush(85*ratio); //
 			projectiles.push(newProjectile);
-			console.log("Shot a projectile at: " + currentDegrees + "°");
+			console.log("Shot a projectile at: " + currentDegrees + "°" + " (" + newProjectile.getCurrentCell().x + "," + newProjectile.getCurrentCell().y + ")");
 		}
 
 		// Removes burnt out projectiles

@@ -3,27 +3,23 @@
  **************************************************/
 // x = x coodinate of center, y = y coordinate of center
 // l = number of wall blocks (l * 100px), w = width of wall, dir = HORIZONTAL or VERTICAL
-var Wall = function (x, y, dir, length) {
+var Wall = function (x, y, dir, length, _cellX, _cellY) {
+    var cellX = _cellX;
+    var cellY = _cellY;
     var centerX = x;
     var centerY = y;
     var height, width;
     // used when deciding dimensions
     var direction = dir;
-    if (direction === "vertical") {
-        height = 15;
-        width = length;
-    } else if(direction === "horizontal"){
+
+    if(direction === "vertical" || direction === "horizontal" || direction === "both"){
         height = length;
-        width = 15;
-    }  else if(direction == "both"){
-        height = 15;
         width = length;
     }
     else{
         direction = undefined;
     }
-
-
+    
     // COORDS ARE FULLY DEPENDENT ON THE centerX and centerY coordinates
     //  0-----------------------------------> 	X
     //	0|			2 _______._______ 3
@@ -34,31 +30,7 @@ var Wall = function (x, y, dir, length) {
     //
     // 	 Y
 
-    /*
-     if(currentTangentPoint.x > centerX - (width/2) &&
-     currentTangentPoint.x < centerX + (width/2) &&
-     currentTangentPoint.y > centerY - (height/2) &&
-     currentTangentPoint.y < centerY + (height/2))
 
-     var differenceToLower = (centerY + (height/2)) - tangentPoint.y;
-     var differenceToUpper = tangentPoint.y  - (centerY - (height/2));
-     var differenceToRight = (centerX + (width/2)) - tangentPoint.x;
-     var differenceToLeft = tangentPoint.x - (centerX - (width/2));
-     // calculate for left
-     /*
-
-
-     if(tangentPoint.y+moveAmount > centerY + (height/2))
-     console.log("closest to lower");
-     if(tangentPoint.y-moveAmount < centerY - (height/2))
-     console.log("closest to upper");
-     if(tangentPoint.x+moveAmount > centerX + (height/2))
-     console.log("closest to right");
-     if(tangentPoint.x-moveAmount < centerX - (height/2))
-     console.log("closest to left");
-     */
-
-    /*
      var coords =
      [
      {"x": (centerX - (width / 2)), "y": (centerY + (height / 2))}, // 0
@@ -66,62 +38,11 @@ var Wall = function (x, y, dir, length) {
      {"x": (centerX + (width / 2)), "y": (centerY - (height / 2))}, // 3
      {"x": (centerX - (width / 2)), "y": (centerY - (height / 2))}  // 2
      ];
-     */
-
-
-
-    // vertical wall
-    var vertical_coords =
-        [
-            {"x": (centerX - (height/2)), "y": (centerY + width)}, // 0
-            {"x": (centerX + (height / 2)), "y": (centerY + width)}, // 1
-            {"x": (centerX + (height / 2)), "y": (centerY)}, // 3
-            {"x": (centerX - (height / 2)), "y": (centerY)}  // 2
-        ];
-    //  0-----------------------------------> 	X                  height = short, width = long
-    //	0|			 2___________.__________3
-    //   |           |                      |
-    //   |           |                      |
-    //   |           |                      |
-    //   |           |                      |
-    //   |           |                      |
-    //   |           |                      |
-    //	 |		     |			            |
-    //	 |			 |			            |
-    //	 |			 |                      |
-    //	 |			 |			            |
-    //	 |			 | 			            |
-    //	 |			 |______________________|
-    //	 |		    0                        1
-    //   v
-    //
-    // 	 Y
-    // horizontal wall
 
     if(direction == "both"){
         height = length;
         width = 15;
     }
-    var horizontal_coords =
-        [
-            {"x": (centerX), "y": (centerY + (width / 2))}, // 0
-            {"x": (centerX + height), "y": (centerY + (width / 2))}, // 1
-            {"x": (centerX + height), "y": (centerY - (width / 2))}, // 3
-            {"x": (centerX), "y": (centerY - (width / 2))}  // 2
-        ];
-    //  0-----------------------------------> 	X
-    //	0|			2 ______________________ 3
-    //	 |		     |			            |
-    //	 |			 |			            |
-    //	 |			 .                      |
-    //	 |			 |			            |
-    //	 |			 | 			            |
-    //	 |			 |______________________|
-    //	 |		    0                        1
-    //   v
-    //
-    // 	 Y
-
 
     // takes the player, that contains all the projectiles to test on
     // If you want to bounce off a horizontal wall (e.g. top or bottom of the screen),
@@ -131,7 +52,6 @@ var Wall = function (x, y, dir, length) {
         // iterate through projectiles, calls invert reverse velocity.
         player.getProjectiles().forEach(function (projectile) {
             if (isCollision(projectile)) {
-                console.log("THERE IS COLLISION!");
                 reverseVelocity(projectile);
                 projectile.updateLineCoords();
             }
@@ -140,21 +60,15 @@ var Wall = function (x, y, dir, length) {
         // if collision, check on what side of the wall it was hit, to see, if it was a vertical or horizontal hit.
     };
 
+
     // if the tangentpoint of the circle touches the wall, this method returns true
     var isCollision = function (projectile) {
-        /*projectile.getAllTangentPoints().forEach(function (currentTangentPoint) {
-         return currentTangentPoint.x > centerX - (width/2) &&
-         currentTangentPoint.x < centerX + (width/2) &&
-         currentTangentPoint.y > centerY - (height/2) &&
-         currentTangentPoint.y < centerY + (height/2);
-         });*/
-        return projectile.getTangentPoint().x > centerX - (width / 2) &&
-            projectile.getTangentPoint().x < centerX + (width / 2) &&
-            projectile.getTangentPoint().y > centerY - (height / 2) &&
-            projectile.getTangentPoint().y < centerY + (height / 2);
+        if(direction != undefined){
+            return projectile.getCurrentCell().x == cellX && projectile.getCurrentCell().y == cellY;
+        }
+        return false;
     };
 
-    // either x -> -x OR y -> -y or vice versa.
     var reverseVelocity = function (projectile) {
         if (touchesVerticalFacade(projectile)) {
             projectile.setDegrees(calculateReflection(true, projectile.getDegrees()));
@@ -167,45 +81,14 @@ var Wall = function (x, y, dir, length) {
 
     // returns true if closest to vertical facade, else false
     var touchesVerticalFacade = function (projectile) {
-        /*
-         if((tangentPoint.x < centerX && tangentPoint.y > centerY) || (tangentPoint.x < centerX && tangentPoint.y < centerY)) // left vertical
-         return true;
-         if((tangentPoint.x > centerX && tangentPoint.y > centerY) || (tangentPoint.x > centerX && tangentPoint.y < centerY)) // right vertical
-         return true;
-         return false;
-         */
+        var centerY = projectile.getCenterCell().y;
+        var tangentY = projectile.getCurrentCell().y;
 
-        if (projectile.getTangentPoint().y + projectile.getMoveAmount() > centerY + (height / 2)) {
-            console.log("closest to lower");
+        if(centerY != tangentY) { // touches horizontal
             return false;
         }
+        return true;
 
-        if (projectile.getTangentPoint().y - projectile.getMoveAmount() < centerY - (height / 2)) {
-            console.log("closest to upper");
-            return false;
-        }
-
-        if (projectile.getTangentPoint().x + projectile.getMoveAmount() > centerX + (width / 2)) {
-            console.log("closest to right");
-            return true;
-        }
-
-        if (projectile.getTangentPoint().x - projectile.getMoveAmount() < centerX - (width / 2)) {
-            console.log("closest to left");
-            return true;
-        }
-
-
-    };
-
-
-    // returns true if closest to horizontal facade, else false. REDUNDANT METHOD!
-    var touchesHorizontalFacade = function (tangentPoint, moveAmount) {
-        if ((tangentPoint.y < centerY && tangentPoint.x < centerX) || (tangentPoint.y < centerY && tangentPoint.x > centerX)) // upper horizontal
-            return true;
-        if ((tangentPoint.y > centerY && tangentPoint.x < centerX) || (tangentPoint.y > centerY && tangentPoint.x > centerX)) // lower horizontal
-            return true;
-        return false;
     };
 
     var calculateReflection = function (hitIsVertical, angleOfIncident) {
@@ -228,18 +111,12 @@ var Wall = function (x, y, dir, length) {
             ctx.fillStyle = "#4C4C4C";
             ctx.beginPath();
 
-            if(direction == "vertical" || direction == "both"){
-                ctx.moveTo(vertical_coords[0].x, vertical_coords[0].y);
-                ctx.lineTo(vertical_coords[1].x, vertical_coords[1].y);
-                ctx.lineTo(vertical_coords[2].x, vertical_coords[2].y);
-                ctx.lineTo(vertical_coords[3].x, vertical_coords[3].y);
-            }
-            if(direction == "horizontal" || direction == "both"){
-                ctx.moveTo(horizontal_coords[0].x, horizontal_coords[0].y);
-                ctx.lineTo(horizontal_coords[1].x, horizontal_coords[1].y);
-                ctx.lineTo(horizontal_coords[2].x, horizontal_coords[2].y);
-                ctx.lineTo(horizontal_coords[3].x, horizontal_coords[3].y);
-            }
+
+                ctx.moveTo(coords[0].x, coords[0].y);
+                ctx.lineTo(coords[1].x, coords[1].y);
+                ctx.lineTo(coords[2].x, coords[2].y);
+                ctx.lineTo(coords[3].x, coords[3].y);
+
 
             ctx.closePath();
             ctx.fill();
