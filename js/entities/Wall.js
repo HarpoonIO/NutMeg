@@ -19,7 +19,7 @@ var Wall = function (x, y, dir, length, _cellX, _cellY) {
     else{
         direction = undefined;
     }
-    
+
     // COORDS ARE FULLY DEPENDENT ON THE centerX and centerY coordinates
     //  0-----------------------------------> 	X
     //	0|			2 _______._______ 3
@@ -31,13 +31,13 @@ var Wall = function (x, y, dir, length, _cellX, _cellY) {
     // 	 Y
 
 
-     var coords =
-     [
-     {"x": (centerX - (width / 2)), "y": (centerY + (height / 2))}, // 0
-     {"x": (centerX + (width / 2)), "y": (centerY + (height / 2))}, // 1
-     {"x": (centerX + (width / 2)), "y": (centerY - (height / 2))}, // 3
-     {"x": (centerX - (width / 2)), "y": (centerY - (height / 2))}  // 2
-     ];
+    var coords =
+        [
+            {"x": (centerX - (width / 2)), "y": (centerY + (height / 2))}, // 0
+            {"x": (centerX + (width / 2)), "y": (centerY + (height / 2))}, // 1
+            {"x": (centerX + (width / 2)), "y": (centerY - (height / 2))}, // 3
+            {"x": (centerX - (width / 2)), "y": (centerY - (height / 2))}  // 2
+        ];
 
     if(direction == "both"){
         height = length;
@@ -112,10 +112,10 @@ var Wall = function (x, y, dir, length, _cellX, _cellY) {
             ctx.beginPath();
 
 
-                ctx.moveTo(coords[0].x, coords[0].y);
-                ctx.lineTo(coords[1].x, coords[1].y);
-                ctx.lineTo(coords[2].x, coords[2].y);
-                ctx.lineTo(coords[3].x, coords[3].y);
+            ctx.moveTo(coords[0].x, coords[0].y);
+            ctx.lineTo(coords[1].x, coords[1].y);
+            ctx.lineTo(coords[2].x, coords[2].y);
+            ctx.lineTo(coords[3].x, coords[3].y);
 
 
             ctx.closePath();

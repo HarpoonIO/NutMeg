@@ -1,6 +1,6 @@
 /**************************************************
-** GAME PLAYER CLASS
-**************************************************/
+ ** GAME PLAYER CLASS
+ **************************************************/
 var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 	var boardSize = _boardSize;
 	var canvasWidth = _canvasWidth;
@@ -40,7 +40,7 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 	//   v
 	//
 	// 	 Y
-	var coords =
+	var coordinates =
 		[
 			// body
 			{"x": (centerX - (width/2)), "y": (centerY + (height/2))}, // 0
@@ -60,7 +60,7 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 
 	// http://stackoverflow.com/questions/22261388/find-vertices-of-rectangle-after-rotating-it
 	var updateNewCoordinatesWhenRotating = function(degrees){
-		coords.forEach(function(coord){
+		coordinates.forEach(function(coord){
 			// Rotate clockwise, angle in radians
 			var newX =
 				(Math.cos(degrees * Math.PI/180) * (coord.x - centerX) -
@@ -77,13 +77,13 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 	 Du ganger punktets y koordinat med vektorens y værdi og det samme med x værdien.
 	 Længden af vektoren er lig med kvadratroden af x koordinaten i 2. plus y koordinaten i 2.
 
-	//http://www.mathsisfun.com/algebra/vectors.html
+	 //http://www.mathsisfun.com/algebra/vectors.html
 	 x (vektorens x-koordinat) = r × cos( θ )
 	 y (vektoresn y-koordinat) = r × sin( θ )
 	 */
 
 	/*
-	  how to mulitply coordinates (a+b)*(c+d) = (ac+ad+bc+bd).
+	 how to mulitply coordinates (a+b)*(c+d) = (ac+ad+bc+bd).
 
 	 */
 	var updateNewCoordinatesWhenMoving = function(movement){
@@ -91,7 +91,7 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 		var newCenterY = (movement * Math.sin(currentDegrees * Math.PI/180)) + centerY;
 		centerX = newCenterX;
 		centerY = newCenterY;
-		coords.forEach(function(coord){
+		coordinates.forEach(function(coord){
 			// VectorX * CurrentX OR VectorY * CurrentY
 			var newX = (movement * Math.cos(currentDegrees * Math.PI/180)) + coord.x;
 			var newY = (movement * Math.sin(currentDegrees * Math.PI/180)) + coord.y;
@@ -163,10 +163,10 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 		ctx.shadowColor = "rgb(0, 0, 0)";
 		ctx.fillStyle = "#002040";
 		ctx.beginPath();
-		ctx.moveTo(coords[0].x,coords[0].y);
-		ctx.lineTo(coords[1].x,coords[1].y);
-		ctx.lineTo(coords[2].x,coords[2].y);
-		ctx.lineTo(coords[3].x,coords[3].y);
+		ctx.moveTo(coordinates[0].x,coordinates[0].y);
+		ctx.lineTo(coordinates[1].x,coordinates[1].y);
+		ctx.lineTo(coordinates[2].x,coordinates[2].y);
+		ctx.lineTo(coordinates[3].x,coordinates[3].y);
 		ctx.closePath();
 		ctx.lineWidth = 4;
 		ctx.strokeStyle = 'black';
@@ -184,20 +184,33 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 
 		// pipe
 		ctx.beginPath();
-		ctx.moveTo(coords[4].x,coords[4].y);
-		ctx.lineTo(coords[5].x,coords[5].y);
-		ctx.lineTo(coords[6].x,coords[6].y);
-		ctx.lineTo(coords[7].x,coords[7].y);
+		ctx.moveTo(coordinates[4].x,coordinates[4].y);
+		ctx.lineTo(coordinates[5].x,coordinates[5].y);
+		ctx.lineTo(coordinates[6].x,coordinates[6].y);
+		ctx.lineTo(coordinates[7].x,coordinates[7].y);
 		ctx.closePath();
 		ctx.fill();
 
 	};
+
+    // getters and setters
+    var getX = function () {
+        return Math.round(centerX);
+    };
+
+    var getY = function () {
+        return Math.round(centerY);
+    };
+
+
 
 
 
 	return {
 		update: update,
 		draw: draw,
-		getProjectiles: getProjectiles
+		getProjectiles: getProjectiles,
+		getX: getX,
+		getY: getY
 	}
 };
