@@ -1,13 +1,15 @@
 /**************************************************
 ** GAME KEYBOARD CLASS
 **************************************************/
-var Keys = function(up, left, right, down, space) {
+var Keys = function(up, left, right, down, space, laser) {
 	var up = up || false,
 		left = left || false,
 		right = right || false,
 		down = down || false,
 		space = space || false,
-		rotate = rotate || false;
+		rotate = rotate || false,
+		laser = laser || false;
+
 		
 	var onKeyDown = function(e) {
 		var that = this,
@@ -28,7 +30,10 @@ var Keys = function(up, left, right, down, space) {
 				break;
 			case 32: // SPACE - FIRE
 				that.space = true;
-				break; 
+				break;
+			case 76: // l - key
+				that.laser = true;
+				break;
 		};
 	};
 
@@ -52,6 +57,9 @@ var Keys = function(up, left, right, down, space) {
 			case 32: // SPACE - FIRE
 				that.space = false;
 				break;
+			case 76: // l - key
+				that.laser = false;
+				break;
 		};
 	};
 
@@ -61,6 +69,7 @@ var Keys = function(up, left, right, down, space) {
 		right: right,
 		down: down,
 		space: space,
+		laser: laser,
 		onKeyDown: onKeyDown,
 		onKeyUp: onKeyUp
 	};

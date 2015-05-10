@@ -26,6 +26,7 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight, _
 	var iterationsLeftToShoot = 0;
 	var projectilesCap = 7;
 
+	var laserToggleSleep = 25;
 	var enableLaser = false;
 	var laserSight = new LaserSight(centerX, centerY, currentDegrees, boardSize, canvasWidth, canvasHeight);
 	laserSight.forwardPush(85*ratio);
@@ -158,18 +159,21 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight, _
 		}
 	};
 
-	var update = function(keys) {
-		//=========== PROJECTILE LOGIC ============//
-		controlProjectileLogic(keys);
-		
-		//=========== TANK MOVEMENT LOGIC ============//
-		if(currentDegrees == -rotation){
-			currentDegrees = 360-rotation;
+	var laserEvent = function(keys){
+		if (keys.laser){
+			if(laserToggleSleep == 0){
+				laserToggleSleep = 25;
+				enableLaser = !enableLaser;
+				if(enableLaser)
+					emitLaserSight();
+			}
 		}
-		if(currentDegrees == 360){
-			currentDegrees = 0;
+		if(laserToggleSleep > 0){
+			laserToggleSleep--;
 		}
+	};
 
+	var movementEvent = function(keys){
 		// Up key takes priority over down
 		if (keys.up) {
 			updateNewCoordinatesWhenMoving(speed);
@@ -179,20 +183,37 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight, _
 
 		// Left key takes priority over right
 		if (keys.left) {
-			enableLaser = true;
 			currentDegrees -= rotation;
 			updateNewCoordinatesWhenRotating(-rotation); // PLACED INSIDE KEY-EVENT, TO SAVE REDUNDANT CALCULATIONS
 			emitLaserSight();
 		} else if (keys.right) {
 			currentDegrees += rotation;
-			enableLaser = true;
 			updateNewCoordinatesWhenRotating(rotation);
 			emitLaserSight();
 		}
 	};
 
+	var update = function(keys) {
+		//=========== PROJECTILE LOGIC ============//
+		controlProjectileLogic(keys)
+
+		//================= LASER LOGIC ============//
+		laserEvent(keys);
+		
+		//=========== TANK MOVEMENT LOGIC ============//
+		if(currentDegrees == -rotation){
+			currentDegrees = 360-rotation;
+		}
+		if(currentDegrees == 360){
+			currentDegrees = 0;
+		}
+		movementEvent(keys);
+
+	};
+
 	var draw = function(ctx, canvas) {
 		// lasersight
+		if(enableLaser)
 		laserSight.draw(ctx);
 
 		// projectiles
