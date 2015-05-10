@@ -19,7 +19,7 @@ var Wall = function (x, y, dir, length, _cellX, _cellY) {
     else{
         direction = undefined;
     }
-    
+
     // COORDS ARE FULLY DEPENDENT ON THE centerX and centerY coordinates
     //  0-----------------------------------> 	X
     //	0|			2 _______._______ 3
@@ -48,23 +48,37 @@ var Wall = function (x, y, dir, length, _cellX, _cellY) {
     // If you want to bounce off a horizontal wall (e.g. top or bottom of the screen),
     // simply reverse your Y velocity. If you want to bounce off a vertical wall (e.g. left or right edge)
     // then reverse your X velocity.
-    var performCollisionControl = function (player) {
-        // iterate through projectiles, calls invert reverse velocity.
-        player.getProjectiles().forEach(function (projectile) {
-            if (isCollision(projectile)) {
-                reverseVelocity(projectile);
-                projectile.updateLineCoords();
+    var performCollisionControl = function (_projectiles, isLaser) {
+        if(!isLaser){
+            // iterate through projectiles, calls invert reverse velocity.
+            _projectiles.forEach(function (projectile) {
+                if (isCollision(projectile)) {
+                    reverseVelocity(projectile);
+                    projectile.updateLineCoords();
+                }
+            });
+            // for each projectile, make method to check collision on wall,
+            // if collision, check on what side of the wall it was hit, to see, if it was a vertical or horizontal hit.
+        } else{
+            //console.log("performing collisionControl on laser");
+            if(isCollision(_projectiles)){
+                //alert("There is collision!");
+                reverseVelocity(_projectiles);
+                _projectiles.itIsAHit();
             }
-        });
-        // for each projectile, make method to check collision on wall,
-        // if collision, check on what side of the wall it was hit, to see, if it was a vertical or horizontal hit.
+        }
+
     };
 
 
     // if the tangentpoint of the circle touches the wall, this method returns true
     var isCollision = function (projectile) {
         if(direction != undefined){
-            return projectile.getCurrentCell().x == cellX && projectile.getCurrentCell().y == cellY;
+            return (projectile.getCurrentCell().x == cellX && projectile.getCurrentCell().y == cellY)/* ||
+                (projectile.getFourTangentPoints()[0].x == cellX && projectile.getFourTangentPoints()[0].y == cellY) ||
+                (projectile.getFourTangentPoints()[1].x == cellX && projectile.getFourTangentPoints()[1].y == cellY) ||
+                (projectile.getFourTangentPoints()[2].x == cellX && projectile.getFourTangentPoints()[2].y == cellY) ||
+                (projectile.getFourTangentPoints()[3].x == cellX && projectile.getFourTangentPoints()[3].y == cellY)*/;
         }
         return false;
     };
@@ -72,10 +86,10 @@ var Wall = function (x, y, dir, length, _cellX, _cellY) {
     var reverseVelocity = function (projectile) {
         if (touchesVerticalFacade(projectile)) {
             projectile.setDegrees(calculateReflection(true, projectile.getDegrees()));
-            console.log("------------------------ TOUCHES VERTICAL FACADE OF THE WALL");
+            //console.log("------------------------ TOUCHES VERTICAL FACADE OF THE WALL");
         } else {
             projectile.setDegrees(calculateReflection(false, projectile.getDegrees()));
-            console.log("------------------------ TOUCHES HORIZONTAL FACADE OF THE WALL");
+            //console.log("------------------------ TOUCHES HORIZONTAL FACADE OF THE WALL");
         }
     };
 
