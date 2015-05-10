@@ -2,7 +2,7 @@
  * Created by thomashed & christophermortensen on 09/05/15.
  */
 /**************************************************
- ** LaserSight CLASS
+ ** LaserSight CLASS --
  **************************************************/
 var LaserSight = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
     var boardSize = _boardSize;
