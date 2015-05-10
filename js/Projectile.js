@@ -9,7 +9,7 @@ var Projectile = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
     var centerY = y;
     var degrees = deg;
     var moveAmount = 5; // 10
-    var lifeAmount = 400; // 400
+    var lifeAmount = 1000; // 400
     var radius = 10;
 
     var wallLength = canvasHeight / boardSize;
@@ -146,7 +146,7 @@ var Projectile = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
         currentGridCell = { x:Math.floor(getTangentPoint().x / wallLength), y:Math.floor(getTangentPoint().y / wallLength) };
 
         if(temp.x != currentGridCell.x || temp.y != currentGridCell.y){
-            console.log("moved from " + temp.x + "," + temp.y + " to " + currentGridCell.x + "," + currentGridCell.y);
+            //console.log("moved from " + temp.x + "," + temp.y + " to " + currentGridCell.x + "," + currentGridCell.y);
 
             oldGridCell = { x: temp.x, y: temp.y };
         }

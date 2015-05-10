@@ -1,7 +1,9 @@
 /**************************************************
- ** GAME PLAYER CLASS
- **************************************************/
-var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
+** GAME PLAYER CLASS
+**************************************************/
+var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight, _walls) {
+	var walls = _walls; // TODO: I mean seriously... this is clumsy, BUT USEFUL FOR THE LASER
+
 	var boardSize = _boardSize;
 	var canvasWidth = _canvasWidth;
 	var canvasHeight = _canvasHeight;
@@ -11,8 +13,8 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 	var ratio = 0.3;
 
 	var speed = 3;
-	var rotation = 5; // 4
-	var currentDegrees = 0;
+	var rotation = 4; // 4
+	var currentDegrees = 0; // 0
 	var centerX      = 200;
 	var centerY      = 250;
 	var width  = 150 * ratio;
@@ -24,6 +26,9 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 	var iterationsLeftToShoot = 0;
 	var projectilesCap = 7;
 
+	var enableLaser = false;
+	var laserSight = new LaserSight(centerX, centerY, currentDegrees, boardSize, canvasWidth, canvasHeight);
+	laserSight.forwardPush(85*ratio);
 
 	// COORDS ARE FULLY DEPENDENT ON THE centerX and centerY coordinates
 
@@ -40,6 +45,8 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 	//   v
 	//
 	// 	 Y
+
+
 	var coordinates =
 		[
 			// body
@@ -53,6 +60,7 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 			{"x": (centerX + (pipeWidth/2)), "y": (centerY - (pipeHeight/2))},
 			{"x": (centerX), "y": (centerY - (pipeHeight/2))}
 		];
+
 
 	var getProjectiles = function(){
 		return projectiles;
@@ -124,9 +132,36 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 		}
 	};
 
-	var update = function(keys) {
-		controlProjectileLogic(keys);
+	// it is basically has projectile logic, that is appeared as a static zig-zag line
+	var emitLaserSight = function(){
 
+		if(enableLaser){
+			laserSight.setDegrees(currentDegrees);
+			laserSight.setCenter({x:centerX, y:centerY});
+			laserSight.emptyCoordinates();
+
+			laserSight.forwardPush(85*ratio);
+
+			while(!laserSight.isDoneBuilding() && !laserSight.isOutOfBounds()){
+				//console.log("inside while. LaserProjectile X: " + laserSight.getTangentPoint().x + " LaserProjectile Y: " + laserSight.getTangentPoint().y);
+				laserSight.forwardPush(laserSight.getMoveAmount());
+
+				walls.forEach(function (row) {
+					row.forEach(function(wall){
+						wall.performCollisionControl(laserSight, true);
+
+					});
+				});
+
+			}
+
+		}
+	};
+
+	var update = function(keys) {
+		//=========== PROJECTILE LOGIC ============//
+		controlProjectileLogic(keys);
+		
 		//=========== TANK MOVEMENT LOGIC ============//
 		if(currentDegrees == -rotation){
 			currentDegrees = 360-rotation;
@@ -144,15 +179,22 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
 
 		// Left key takes priority over right
 		if (keys.left) {
+			enableLaser = true;
 			currentDegrees -= rotation;
 			updateNewCoordinatesWhenRotating(-rotation); // PLACED INSIDE KEY-EVENT, TO SAVE REDUNDANT CALCULATIONS
+			emitLaserSight();
 		} else if (keys.right) {
 			currentDegrees += rotation;
+			enableLaser = true;
 			updateNewCoordinatesWhenRotating(rotation);
+			emitLaserSight();
 		}
 	};
 
 	var draw = function(ctx, canvas) {
+		// lasersight
+		laserSight.draw(ctx);
+
 		// projectiles
 		projectiles.forEach(function(projectile){
 			projectile.draw(ctx);
@@ -201,10 +243,6 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight) {
     var getY = function () {
         return Math.round(centerY);
     };
-
-
-
-
 
 	return {
 		update: update,

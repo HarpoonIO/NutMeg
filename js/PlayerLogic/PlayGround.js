@@ -18,7 +18,7 @@ var Playground = function (_canvasWidth, _canvasHeight, startX, startY) {
     var players = [];
 
     // Initialise the local player
-    var localPlayer = new Player(startX, startY, mazeGenerator.getBoardSize(), canvasWidth, canvasHeight);
+    var localPlayer = new Player(startX, startY, mazeGenerator.getBoardSize(), canvasWidth, canvasHeight, walls);
     players.push(localPlayer);
     // Initialise enemy player
     var enemyPlayer = new EnemyAI(300, 300, players); // TODO: hardcoded values
@@ -41,7 +41,7 @@ var Playground = function (_canvasWidth, _canvasHeight, startX, startY) {
         enemyPlayer.update();
         walls.forEach(function (row) {
             row.forEach(function(wall){
-                wall.performCollisionControl(localPlayer);
+                wall.performCollisionControl(localPlayer.getProjectiles(), false);
             });
 
         });
