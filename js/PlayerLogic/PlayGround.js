@@ -26,8 +26,9 @@ var Playground = function (_canvasWidth, _canvasHeight, startX, startY) {
 
     var draw = function (ctx) {
         // Draw the local player
-        localPlayer.draw(ctx);
+
         mazeGenerator.draw(ctx);
+        localPlayer.draw(ctx);
         enemyPlayer.draw(ctx);
         /*
         * walls.forEach(function (wall) {

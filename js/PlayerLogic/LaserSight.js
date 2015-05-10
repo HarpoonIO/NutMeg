@@ -35,20 +35,21 @@ var LaserSight = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
             ctx.stroke();
         }
 
+
+        ctx.lineWidth = 12;
         ctx.fillStyle = "#800000";
         ctx.beginPath();
         ctx.arc(centerX,centerY,radius,0,2*Math.PI);
         ctx.fill();
         ctx.stroke();
-
         ctx.setLineDash([0, 0]);
+
     };
 
     var isOutOfBounds = function(){
-      if(centerX < 0 || centerY < 0){
-          return true;
-      }
-        return false;
+      return currentGridCell.x < 0 || currentGridCell.x < 0 ||
+              currentGridCell.x > boardSize-1 || currentGridCell.y > boardSize-1;
+
     };
 
     var getCoordinates = function(){
