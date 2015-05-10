@@ -23,10 +23,10 @@ var LaserSight = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
 
     var draw = function(ctx) {
 
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 2;
         ctx.shadowBlur = 15;
         ctx.shadowColor = "rgb(0, 0, 0)";
-
+        ctx.setLineDash([5, 15]);
         for(var i = 0; i < coordinates.length-1; i++){
             ctx.beginPath();
             ctx.moveTo(coordinates[i].x, coordinates[i].y);
@@ -40,6 +40,8 @@ var LaserSight = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
         ctx.arc(centerX,centerY,radius,0,2*Math.PI);
         ctx.fill();
         ctx.stroke();
+
+        ctx.setLineDash([0, 0]);
     };
 
     var isOutOfBounds = function(){
