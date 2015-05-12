@@ -18,7 +18,7 @@ var LaserSight = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
     var oldGridCell = {};
     var currentGridCell = {};
 
-    var pointCap = 21;
+    var pointCap = 41;
     var coordinates = [];
 
     var draw = function(ctx) {
@@ -49,7 +49,6 @@ var LaserSight = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
     var isOutOfBounds = function(){
       return currentGridCell.x < 0 || currentGridCell.x < 0 ||
               currentGridCell.x > boardSize-1 || currentGridCell.y > boardSize-1;
-
     };
 
     var getCoordinates = function(){

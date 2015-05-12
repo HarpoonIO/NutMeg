@@ -120,6 +120,10 @@ var Wall = function (x, y, dir, length, _cellX, _cellY) {
         }
     };
 
+    var performCollisionControlOnPlayer = function (player) {
+        alert(player.x + ", " + player.y);
+    };
+
     var draw = function (ctx) {
         if(direction){
             ctx.fillStyle = "#4C4C4C";
@@ -139,6 +143,7 @@ var Wall = function (x, y, dir, length, _cellX, _cellY) {
 
     return {
         draw: draw,
-        performCollisionControl: performCollisionControl
+        performCollisionControl: performCollisionControl,
+        performCollisionControlOnPlayer: performCollisionControlOnPlayer
     }
 };

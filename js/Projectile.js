@@ -143,18 +143,16 @@ var Projectile = function(x, y, deg, _boardSize, _canvasWidth, _canvasHeight) {
 
     var updateCellData = function(){
         var temp = { x: currentGridCell.x, y: currentGridCell.y};
-        currentGridCell = { x:Math.floor(getTangentPoint().x / wallLength), y:Math.floor(getTangentPoint().y / wallLength) };
-
+        currentGridCell = {
+            x:Math.floor(getTangentPoint().x / wallLength),
+            y:Math.floor(getTangentPoint().y / wallLength)
+        };
         if(temp.x != currentGridCell.x || temp.y != currentGridCell.y){
-            //console.log("moved from " + temp.x + "," + temp.y + " to " + currentGridCell.x + "," + currentGridCell.y);
-
             oldGridCell = { x: temp.x, y: temp.y };
         }
     };
 
     var getCurrentCell = function(){
-        //var wallLength = canvasHeight / boardSize;
-        //return { x:Math.floor(getTangentPoint().x / wallLength), y:Math.floor(getTangentPoint().y / wallLength) };
         return currentGridCell;
     };
 

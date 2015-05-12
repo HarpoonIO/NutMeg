@@ -2,7 +2,7 @@
  * Created by thomashed & christophermortensen on 05/05/15.
  */
 var MazeGenerator = function (_canvasHeight, _canvasWidth) {
-    var boardSize = 11;
+    var boardSize = 111;
     var canvasHeight = _canvasHeight;
     var canvasWidth = _canvasWidth;
     var grid;

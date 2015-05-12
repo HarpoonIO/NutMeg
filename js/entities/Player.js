@@ -68,9 +68,9 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight, _
 	};
 
 	// http://stackoverflow.com/questions/22261388/find-vertices-of-rectangle-after-rotating-it
+
 	var updateNewCoordinatesWhenRotating = function(degrees){
 		coordinates.forEach(function(coord){
-			// Rotate clockwise, angle in radians
 			var newX =
 				(Math.cos(degrees * Math.PI/180) * (coord.x - centerX) -
 				(Math.sin(degrees * Math.PI/180) * (coord.y - centerY)) + centerX);
@@ -101,7 +101,6 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight, _
 		centerX = newCenterX;
 		centerY = newCenterY;
 		coordinates.forEach(function(coord){
-			// VectorX * CurrentX OR VectorY * CurrentY
 			var newX = (movement * Math.cos(currentDegrees * Math.PI/180)) + coord.x;
 			var newY = (movement * Math.sin(currentDegrees * Math.PI/180)) + coord.y;
 			coord.x = newX;
@@ -131,6 +130,14 @@ var Player = function(startX, startY, _boardSize, _canvasWidth, _canvasHeight, _
 				projectiles.splice(i, 1);
 			}
 		}
+	};
+
+	var checkForCollisionAtWalls = function(){
+		walls.forEach(function (row){
+			row.forEach(function(wall){
+				wall.performCollisionControlOnPlayer(this);
+			});
+		});
 	};
 
 	// it is basically has projectile logic, that is appeared as a static zig-zag line
