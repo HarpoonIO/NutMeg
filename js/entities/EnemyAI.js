@@ -104,7 +104,14 @@ var EnemyAI = function (startX, startY, _opponents) {
     function findDirection() {
         var x2 = opponents[0].getX();
         var y2 = opponents[0].getY();
-        return Math.round((y2 - centerY) / (x2 - centerX));
+        var newDirection = (y2 - centerY) / (x2 - centerX);
+        var inverseTan = Math.tan(-1) * newDirection;
+
+
+
+
+
+        return newDirection;
     }
 
     function isObstacle() {
