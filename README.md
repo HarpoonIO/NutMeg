@@ -14,4 +14,4 @@ Next Version (1.1.0)
 
 - Collision Control (player - wall)
 - Enhanced Collsion Control (projectile - wall) with no bugs
-- 
+
